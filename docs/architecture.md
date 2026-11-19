@@ -43,13 +43,13 @@ flowchart LR
 
 ## Decisões de implementação
 
-- **Camada de apresentação:** manter componentes React por capacidade e usar `src/api/client.ts` para chamadas; cada tela deve apresentar carregamento, vazio, sucesso e erro acessíveis em português.
-- **Camada de lógica:** manter rotas Express finas e concentrar validação de entrada e regras de negócio em funções de serviço, respondendo com 4xx intencionais para entradas ou referências inválidas.
-- **Camada de dados:** declarar campos obrigatórios e restrições nos esquemas Mongoose; manter a criação de dados de demonstração idempotente por upsert, sem apagar registros existentes.
-- **Registro de atividades:** validar tipo, duração e IDs antes de consultar referências; exigir pessoa e equipe existentes, calcular pontos e data no serviço e persistir as referências como ObjectIds.
-- **Gerenciamento de equipes:** exigir nome e mascote no modelo, manter `members` como lista de referências e validar as referências ao criar equipes.
-- **Placar:** agregar os pontos das atividades por equipe, ordenar do maior total para o menor e atribuir posições começando em 1.
-- **Sugestões de treino:** localizar a pessoa pelo e-mail, usar meta e atividade recente para ordenar os treinos compatíveis e explicar a recomendação; retornar 4xx para e-mail sem correspondência.
+- Decisão da camada de apresentação: manter componentes React por capacidade e usar `src/api/client.ts` para chamadas; cada tela deve apresentar carregamento, vazio, sucesso e erro acessíveis em português.
+- Decisão da camada de lógica: manter rotas Express finas e concentrar validação de entrada e regras de negócio em funções de serviço, respondendo com 4xx intencionais para entradas ou referências inválidas.
+- Decisão da camada de dados: declarar campos obrigatórios e restrições nos esquemas Mongoose; manter a criação de dados de demonstração idempotente por upsert, sem apagar registros existentes.
+- Abordagem para registro de atividades: validar tipo, duração e IDs antes de consultar referências; exigir pessoa e equipe existentes, calcular pontos e data no serviço e persistir as referências como ObjectIds.
+- Abordagem para gerenciamento de equipes: exigir nome e mascote no modelo, manter `members` como lista de referências e validar as referências ao criar equipes.
+- Abordagem para o placar: agregar os pontos das atividades por equipe, ordenar do maior total para o menor e atribuir posições começando em 1.
+- Abordagem para sugestões de treino: localizar a pessoa pelo e-mail, usar meta e atividade recente para ordenar os treinos compatíveis e explicar a recomendação; retornar 4xx para e-mail sem correspondência.
 
 ## Ordem segura de implementação
 
