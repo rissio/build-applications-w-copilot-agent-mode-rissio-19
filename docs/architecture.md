@@ -43,19 +43,30 @@ flowchart LR
 
 ## Decisões de implementação
 
-Registre seu plano aqui antes de editar o código.
+- **Camada de apresentação:** manter componentes React por capacidade e usar `src/api/client.ts` para chamadas; cada tela deve apresentar carregamento, vazio, sucesso e erro acessíveis em português.
+- **Camada de lógica:** manter rotas Express finas e concentrar validação de entrada e regras de negócio em funções de serviço, respondendo com 4xx intencionais para entradas ou referências inválidas.
+- **Camada de dados:** declarar campos obrigatórios e restrições nos esquemas Mongoose; manter a criação de dados de demonstração idempotente por upsert, sem apagar registros existentes.
+- **Registro de atividades:** validar tipo, duração e IDs antes de consultar referências; exigir pessoa e equipe existentes, calcular pontos e data no serviço e persistir as referências como ObjectIds.
+- **Gerenciamento de equipes:** exigir nome e mascote no modelo, manter `members` como lista de referências e validar as referências ao criar equipes.
+- **Placar:** agregar os pontos das atividades por equipe, ordenar do maior total para o menor e atribuir posições começando em 1.
+- **Sugestões de treino:** localizar a pessoa pelo e-mail, usar meta e atividade recente para ordenar os treinos compatíveis e explicar a recomendação; retornar 4xx para e-mail sem correspondência.
 
-- Decisão da camada de apresentação:
-- Decisão da camada de lógica:
-- Decisão da camada de dados:
-- Abordagem para registro de atividades:
-- Abordagem para gerenciamento de equipes:
-- Abordagem para o placar:
-- Abordagem para sugestões de treino:
+## Ordem segura de implementação
+
+1. Completar e validar os esquemas Mongoose; confirmar os contratos de dados e a idempotência do seed.
+2. Implementar os serviços de atividades e equipes com validação e referências; em seguida, placar e sugestões.
+3. Executar os testes de contrato do backend e corrigir as regressões antes de alterar a apresentação.
+4. Implementar os estados e a renderização dos componentes React usando o cliente de API compartilhado; executar os testes do frontend.
+5. Executar as compilações das duas camadas e repetir as suítes relevantes.
 
 ## Plano de testes
 
-Registre os comandos executados e o significado de cada falha.
+Linha de base registrada antes da implementação, com MongoDB em execução:
+
+- `npm test --prefix octofit-tracker/backend`: **8 falhas e 1 aprovação em 9 testes**. Quatro falhas são validações ausentes nos modelos; as quatro da API indicam criação ainda não implementada (resposta 501), placar vazio e sugestão incompatível com o padrão de atividade.
+- `npm test --prefix octofit-tracker/frontend`: **15 falhas em 15 testes**. As telas ainda exibem implementação pendente e não oferecem os dados, estados de carregamento/vazio/erro ou a requisição de sugestões esperados pelo contrato.
+
+Após cada etapa, verificar os contratos específicos e, ao concluir, executar:
 
 - Testes da camada de dados: `npm run test:data --prefix octofit-tracker/backend`
 - Testes da API: `npm run test:api --prefix octofit-tracker/backend`
