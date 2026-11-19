@@ -99,7 +99,15 @@ export async function createTeam(input: unknown) {
     }
   }
 
-  return Team.create({ name, mascot, members: memberIds });
+  const team = await Team.create({ name, mascot, members: memberIds });
+  if (memberIds.length > 0) {
+    await Team.updateMany(
+      { _id: { $ne: team._id }, members: { $in: memberIds } },
+      { $pull: { members: { $in: memberIds } } },
+    );
+    await User.updateMany({ _id: { $in: memberIds } }, { $set: { team: team._id } });
+  }
+  return team;
 }
 
 export async function getLeaderboard() {
